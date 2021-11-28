@@ -43,8 +43,9 @@ license {
     ],
 }
 
-cc_library_shared {
-    name: "libcamera_client",
+cc_defaults {
+    name: "libcamera_client_defaults",
+    defaults: ["camera_parameter_library_defaults"],
 
     aidl: {
         export_aidl_headers: true,
@@ -80,17 +81,6 @@ cc_library_shared {
         "VendorTagDescriptor.cpp",
     ],
 
-    shared_libs: [
-        "libbase",
-        "libcutils",
-        "libutils",
-        "liblog",
-        "libbinder",
-        "libgui",
-        "libcamera_metadata",
-        "libnativewindow",
-    ],
-
     include_dirs: [
         "system/media/private/camera/include",
         "frameworks/native/include/media/openmax",
@@ -99,7 +89,6 @@ cc_library_shared {
          "include",
          "include/camera"
     ],
-    export_shared_lib_headers: ["libcamera_metadata", "libnativewindow", "libgui"],
 
     cflags: [
         "-Werror",
@@ -107,6 +96,57 @@ cc_library_shared {
         "-Wextra",
     ],
 
+}
+
+cc_library_shared {
+    name: "libcamera_client",
+    double_loadable: true,
+    defaults: ["libcamera_client_defaults"],
+    shared_libs: [
+        "libcutils",
+        "libutils",
+        "liblog",
+        "libbinder",
+        "libgui",
+        "libcamera_metadata",
+        "libnativewindow",
+    ],
+    export_shared_lib_headers: ["libcamera_metadata", "libnativewindow", "libgui"]
+}
+
+cc_library_shared {
+    name: "libcamera_client_vendor",
+    vendor: true,
+    defaults: ["libcamera_client_defaults"],
+    shared_libs: [
+        "libcutils",
+        "libutils",
+        "liblog",
+        "libbinder",
+        "libgui_vendor",
+        "libcamera_metadata",
+        "libnativewindow",
+    ],
+    header_libs: [
+        "media_plugin_headers"
+    ],
+    export_shared_lib_headers: ["libcamera_metadata", "libnativewindow", "libgui_vendor"]
+}
+
+cc_library_static {
+    name: "libcamera_parameters",
+
+    vendor_available: true,
+    export_include_dirs: [
+        "include",
+    ],
+
+    shared_libs: [
+        "liblog",
+        "libutils",
+    ],
+
+    srcs: ["CameraParameters.cpp"],
 }
 
 // AIDL interface between camera clients and the camera service.
