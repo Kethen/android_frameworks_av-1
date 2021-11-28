@@ -24,7 +24,7 @@
 #include <system/graphics.h>
 
 #include <cutils/properties.h>
-#include <utils/Log.h>
+#include <log/log.h>
 
 namespace android {
 

@@ -23,7 +23,7 @@
 #include <binder/Parcel.h>
 #include <media/hardware/HardwareAPI.h>
 #include <stdint.h>
-#include <utils/Log.h>
+#include <log/log.h>
 
 namespace android {
 

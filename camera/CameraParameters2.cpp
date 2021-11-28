@@ -17,8 +17,9 @@
 
 #define LOG_TAG "CameraParams2"
 // #define LOG_NDEBUG 0
-#include <utils/Log.h>
+#include <log/log.h>
 
+#include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include <camera/CameraParameters2.h>
