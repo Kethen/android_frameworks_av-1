@@ -43,8 +43,8 @@ license {
     ],
 }
 
-cc_library_shared {
-    name: "libcamera_client",
+cc_defaults {
+    name: "libcamera_client_defaults",
 
     aidl: {
         export_aidl_headers: true,
@@ -80,6 +80,28 @@ cc_library_shared {
         "VendorTagDescriptor.cpp",
     ],
 
+    include_dirs: [
+        "system/media/private/camera/include",
+        "frameworks/native/include/media/openmax",
+    ],
+
+    export_include_dirs: [
+         "include",
+         "include/camera"
+    ],
+
+    cflags: [
+        "-Werror",
+        "-Wall",
+        "-Wextra",
+    ],
+
+}
+
+cc_library_shared {
+    name: "libcamera_client",
+    double_loadable: true,
+    defaults: ["libcamera_client_defaults"],
     shared_libs: [
         "libbase",
         "libcutils",
@@ -90,23 +112,27 @@ cc_library_shared {
         "libcamera_metadata",
         "libnativewindow",
     ],
+    export_shared_lib_headers: ["libcamera_metadata", "libnativewindow", "libgui"]
+}
 
-    include_dirs: [
-        "system/media/private/camera/include",
-        "frameworks/native/include/media/openmax",
+cc_library_shared {
+    name: "libcamera_client_vendor",
+    vendor: true,
+    defaults: ["libcamera_client_defaults"],
+    shared_libs: [
+        "libbase",
+        "libcutils",
+        "libutils",
+        "liblog",
+        "libbinder",
+        "libgui_vendor",
+        "libcamera_metadata",
+        "libnativewindow",
     ],
-    export_include_dirs: [
-         "include",
-         "include/camera"
+    header_libs: [
+        "media_plugin_headers"
     ],
-    export_shared_lib_headers: ["libcamera_metadata", "libnativewindow", "libgui"],
-
-    cflags: [
-        "-Werror",
-        "-Wall",
-        "-Wextra",
-    ],
-
+    export_shared_lib_headers: ["libcamera_metadata", "libnativewindow", "libgui_vendor"]
 }
 
 // AIDL interface between camera clients and the camera service.
